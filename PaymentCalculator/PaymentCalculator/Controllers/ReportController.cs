@@ -13,7 +13,7 @@ namespace PaymentCalculator.Controllers
     [Route("report")]
     public class ReportController : Controller
     {
-        [HttpGet]
+       [HttpGet]
        public ActionResult<IEnumerable<EmployeeReport>> GetReports()
         {
 

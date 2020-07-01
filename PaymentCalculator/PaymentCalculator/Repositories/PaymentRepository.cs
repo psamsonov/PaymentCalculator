@@ -22,30 +22,13 @@ namespace PaymentCalculator.Repositories
     public class PaymentRepository
     {
 
-        public static IEnumerable<EmployeeReport> GenerateReport()
+        public static IEnumerable<PaymentModel> GetPayments()
         {
-            var list = new List<EmployeeReport>();
-
             using (var db = new PaymentsContext())
             {
-                var records = db.Payments.ToList();
-                foreach (var record in records)
-                {
-                    list.Add(new EmployeeReport
-                    {
-                        AmountPaid = 1,
-                        EmployeeID = record.EmployeeId,
-                        PayPeriod = new PayPeriod
-                        {
-                            StartDate = record.Date,
-                            EndDate = record.Date
-                        }
-                    });
-                }
-               
+                return new List<PaymentModel>(db.Payments.OrderBy(x => x.EmployeeId).ToList());
             }
 
-            return list;
         }
 
         public static void WriteRecords(IEnumerable<PaymentModel> payments, string reportId)
