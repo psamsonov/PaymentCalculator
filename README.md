@@ -31,4 +31,3 @@ The project includes unit tests.
 * No dependency injection
 * No security
 * Unit tests are rather brief since dependency injection makes testing a lot easier
-* 
