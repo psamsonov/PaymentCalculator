@@ -13,6 +13,11 @@ namespace PaymentCalculator.Services
         public static IEnumerable<EmployeeReport> GetReport()
         {
             var payments = PaymentRepository.GetPayments();
+            return GenerateReport(payments);
+        }
+
+        public static IEnumerable<EmployeeReport> GenerateReport(IEnumerable<PaymentModel> payments)
+        {
             Dictionary<int, Dictionary<PayPeriod, EmployeeReport>> employees = new Dictionary<int, Dictionary<PayPeriod, EmployeeReport>>();
 
             foreach (var payment in payments)
@@ -24,7 +29,8 @@ namespace PaymentCalculator.Services
                 var payPeriod = PayPeriod.FindPayPeriod(payment.Date);
                 var salary = PayScale.Payments[payment.JobGroup] * payment.HoursWorked;
                 if (!employeePaymentPeriods.ContainsKey(payPeriod))
-                    employeePaymentPeriods.Add(payPeriod, new EmployeeReport {
+                    employeePaymentPeriods.Add(payPeriod, new EmployeeReport
+                    {
                         EmployeeID = payment.EmployeeId,
                         PayPeriod = payPeriod
                     });
@@ -32,10 +38,10 @@ namespace PaymentCalculator.Services
             }
 
             var reports = new List<EmployeeReport>();
-            
+
             foreach (var employee in employees.Values)
             {
-                foreach(var report in employee.Values.OrderBy(x => x.PayPeriod))
+                foreach (var report in employee.Values.OrderBy(x => x.PayPeriod))
                 {
                     reports.Add(report);
                 }

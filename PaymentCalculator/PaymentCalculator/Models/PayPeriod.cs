@@ -41,7 +41,7 @@ namespace PaymentCalculator.Models
         /// <returns></returns>
         public static PayPeriod FindPayPeriod(DateTime date)
         {
-            if (date.Day >= 15)
+            if (date.Day <= 15)
             {
                 return new PayPeriod
                 {
@@ -53,7 +53,7 @@ namespace PaymentCalculator.Models
             {
                 return new PayPeriod
                 {
-                    StartDate = new DateTime(date.Year, date.Month, 15),
+                    StartDate = new DateTime(date.Year, date.Month, 16),
                     EndDate = new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month))
                 };
             }
