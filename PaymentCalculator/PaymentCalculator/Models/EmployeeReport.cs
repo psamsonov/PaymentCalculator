@@ -12,6 +12,8 @@ namespace PaymentCalculator.Models
         public int EmployeeID { get; set; }
 
         public PayPeriod PayPeriod { get; set; }
+        
+        public double HoursWorked { get; set; }
 
 
         //Special formatting for consuption by the front end
