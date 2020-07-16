@@ -38,6 +38,7 @@ namespace PaymentCalculator.Services
                         PayPeriod = payPeriod
                     });
                 employeePaymentPeriods[payPeriod].AmountPaid += salary;
+                employeePaymentPeriods[payPeriod].HoursWorked += payment.HoursWorked;
             }
            
             var reports = new List<EmployeeReport>();
@@ -46,7 +47,26 @@ namespace PaymentCalculator.Services
             {
                 foreach (var report in employee.Values.OrderBy(x => x.PayPeriod))
                 {
-                    reports.Add(report);
+                    if (report.HoursWorked > OVERTIME_HOURS) {
+                        
+                        var overTimeReport = new EmployeeReport
+                        {
+                            EmployeeID = payment.EmployeeId,
+                            PayPeriod = payPeriod
+                        };
+                        overTimeReport.HoursWorked = report.HoursWorked - OVERTIME_HOURS;
+                        overTimeReport.AmountPaid = overTimeReport.HoursWorked * OVERTIME * PayScale.Payments[report.JobGroup];
+                        
+                        reports.Add(overTimeReport);
+                        
+                        report.HoursWorked = (double)OVERTIME;
+                        report.AmountPaid = report.HoursWorked * PayScale.Payments[report.JobGroup];
+                        
+                        reports.Add(report);
+                        
+                    } else {
+                        reports.Add(report);
+                    }
                 }
             }
 
