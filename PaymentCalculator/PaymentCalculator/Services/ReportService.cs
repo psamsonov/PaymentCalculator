@@ -10,6 +10,9 @@ namespace PaymentCalculator.Services
 {
     public class ReportService
     {
+        private const double OVERTIME=1.5;
+        private const int OVERTIME_HOURS = 60;
+        
         public static IEnumerable<EmployeeReport> GetReport()
         {
             var payments = PaymentRepository.GetPayments();
@@ -36,7 +39,7 @@ namespace PaymentCalculator.Services
                     });
                 employeePaymentPeriods[payPeriod].AmountPaid += salary;
             }
-
+           
             var reports = new List<EmployeeReport>();
 
             foreach (var employee in employees.Values)
